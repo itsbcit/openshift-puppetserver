@@ -51,3 +51,5 @@ COPY foreground /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground
 
 RUN chmod 775 /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground \
  && chmod 775 /etc
+
+CMD [ "/opt/puppetlabs/bin/puppetserver", "foreground" ]
