@@ -16,9 +16,10 @@ COPY puppetdb.conf /etc/puppetlabs/puppet/puppetdb.conf
 
 COPY 10-resolve-userid.sh /docker-entrypoint.d/10-resolve-userid.sh
 
-RUN find /opt/puppetlabs -type d -uid 999 \
-  | xargs -I % \
-    sh -c 'chown 0:0 %; chmod g+rwx %'
+RUN chmod    775 /opt/puppetlabs \
+ && chown -R 0:0 /opt/puppetlabs \
+ && find /opt/puppetlabs -type d | xargs chmod g+rwx \
+ && find /opt/puppetlabs -type f | xargs chmod g+rw
 
 RUN chmod 775 /etc/puppetlabs \
  && find /etc/puppetlabs -type d -uid 999 \
@@ -42,22 +43,21 @@ RUN chown 0:0 /etc/puppetlabs/code \
 VOLUME /etc/puppetlabs/code
 COPY 50-production.sh /docker-entrypoint.d/50-production.sh
 
-RUN mv /opt/puppetlabs/server/data /opt/puppetlabs/server/skel-data \
- && mkdir /opt/puppetlabs/server/data \
- && chown 0:0 /opt/puppetlabs/server/data \
- && chmod 775 /opt/puppetlabs/server/data 
-VOLUME /opt/puppetlabs/server/data
-
-ADD 50-puppetserver-data.sh /docker-entrypoint.d/50-puppetserver-data.sh
-
-COPY puppet.conf /etc/puppetlabs/puppet/puppet.conf
-RUN chmod g+rw /etc/puppetlabs/puppet/puppet.conf
-
 COPY puppetserver /etc/default/puppetserver
 COPY foreground /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground
 
 RUN chmod 775 /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground \
  && chmod 775 /etc
+
+RUN mv /opt/puppetlabs/server /opt/puppetlabs/skel-server \
+ && mkdir /opt/puppetlabs/server \
+ && chown 0:0 /opt/puppetlabs/server \
+ && chmod 775 /opt/puppetlabs/server 
+
+ADD 50-puppetserver-server.sh /docker-entrypoint.d/50-puppetserver-server.sh
+
+COPY puppet.conf /etc/puppetlabs/puppet/puppet.conf
+RUN chmod g+rw /etc/puppetlabs/puppet/puppet.conf
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD \
   curl --fail -H 'Accept: pson' \
