@@ -1,8 +1,8 @@
 FROM bcit/centos:7
 
-ENV HOME /opt/puppetlabs/server/data/puppetserver
-ENV RUNUSER puppet
-ENV PUPPET_HEALTHCHECK_ENVIRONMENT production
+ENV HOME=/opt/puppetlabs/server/data/puppetserver
+ENV RUNUSER=puppet
+ENV PUPPET_HEALTHCHECK_ENVIRONMENT=production
 
 RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5 \
