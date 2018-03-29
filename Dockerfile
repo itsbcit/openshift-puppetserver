@@ -2,6 +2,7 @@ FROM bcit/centos:7
 
 ENV HOME /opt/puppetlabs/server/data/puppetserver
 ENV RUNUSER puppet
+ENV PUPPET_HEALTHCHECK_ENVIRONMENT production
 
 RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5 \
@@ -38,6 +39,7 @@ VOLUME /etc/puppetlabs/ssl
 RUN chown 0:0 /etc/puppetlabs/code \
  && chmod 775 /etc/puppetlabs/code
 VOLUME /etc/puppetlabs/code
+COPY 50-production.sh /docker-entrypoint.d/50-production.sh
 
 RUN mv /opt/puppetlabs/server/data /opt/puppetlabs/server/skel-data \
  && mkdir /opt/puppetlabs/server/data \
@@ -56,5 +58,16 @@ COPY foreground /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground
 RUN chmod 775 /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground \
  && chmod 775 /etc
 
+HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD \
+  curl --fail -H 'Accept: pson' \
+  --resolve 'puppet:8140:127.0.0.1' \
+  --cert   $(puppet config print hostcert) \
+  --key    $(puppet config print hostprivkey) \
+  --cacert $(puppet config print localcacert) \
+  https://puppet:8140/${PUPPET_HEALTHCHECK_ENVIRONMENT}/status/test \
+  |  grep -q '"is_alive":true' \
+  || exit 1
+
 EXPOSE 8140
+
 CMD [ "/opt/puppetlabs/bin/puppetserver", "foreground" ]
