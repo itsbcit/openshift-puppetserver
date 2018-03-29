@@ -5,7 +5,8 @@ ENV RUNUSER puppet
 
 RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5 \
- && yum -y install puppetserver
+ && yum -y install \
+        puppetserver
 
 COPY 10-resolve-userid.sh /docker-entrypoint.d/10-resolve-userid.sh
 
