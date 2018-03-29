@@ -1,6 +1,7 @@
 FROM bcit/centos:7
 
 ENV HOME=/opt/puppetlabs/server/data/puppetserver
+ENV PATH=/opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:$PATH
 ENV RUNUSER=puppet
 ENV PUPPET_HEALTHCHECK_ENVIRONMENT=production
 
