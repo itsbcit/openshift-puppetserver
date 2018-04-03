@@ -4,6 +4,8 @@ ENV HOME=/opt/puppetlabs/server/data/puppetserver
 ENV PATH=/opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:$PATH
 ENV RUNUSER=puppet
 ENV PUPPET_HEALTHCHECK_ENVIRONMENT=production
+ENV PUPPET_CERTNAME=puppet
+ENV PUPPET_CERT_ALTNAMES="puppetserver.puppet.svc,puppetserver"
 
 RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5 \
@@ -15,6 +17,7 @@ RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm
 COPY puppetdb.conf /etc/puppetlabs/puppet/puppetdb.conf
 
 COPY 10-resolve-userid.sh /docker-entrypoint.d/10-resolve-userid.sh
+COPY 60-puppet-conf.sh /docker-entrypoint.d/60-puppet-conf.sh
 
 RUN chmod    775 /opt/puppetlabs \
  && chown -R 0:0 /opt/puppetlabs \
