@@ -1,1 +1,1 @@
-[ -d /opt/puppetlabs/server/data/puppetserver ] || cp -r /opt/puppetlabs/skel-server/* /opt/puppetlabs/server/
+[ -d /opt/puppetlabs/server/data ] || tar zxf /opt/puppetlabs/server.tar.gz -C /opt/puppetlabs

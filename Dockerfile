@@ -49,10 +49,10 @@ COPY foreground /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground
 RUN chmod 775 /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground \
  && chmod 775 /etc
 
-RUN mv /opt/puppetlabs/server /opt/puppetlabs/skel-server \
- && mkdir /opt/puppetlabs/server \
- && chown 0:0 /opt/puppetlabs/server \
- && chmod 775 /opt/puppetlabs/server 
+RUN tar czf /opt/puppetlabs/server.tar.gz -C /opt/puppetlabs server
+RUN rm -rf /opt/puppetlabs/server \
+ && chown 0:0 /opt/puppetlabs \
+ && chmod 775 /opt/puppetlabs 
 
 ADD 50-puppetserver-server.sh /docker-entrypoint.d/50-puppetserver-server.sh
 
