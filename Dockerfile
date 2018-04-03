@@ -36,11 +36,6 @@ COPY 50-varlog.sh /docker-entrypoint.d/50-varlog.sh
 COPY logback.xml /etc/puppetlabs/puppetserver/logback.xml
 COPY request-logging.xml /etc/puppetlabs/puppetserver/request-logging.xml
 
-RUN mkdir /etc/puppetlabs/ssl \
- && chown 0:0 /etc/puppetlabs/ssl \
- && chmod 770 /etc/puppetlabs/ssl 
-VOLUME /etc/puppetlabs/ssl
-
 RUN chown 0:0 /etc/puppetlabs/code \
  && chmod 775 /etc/puppetlabs/code
 VOLUME /etc/puppetlabs/code
