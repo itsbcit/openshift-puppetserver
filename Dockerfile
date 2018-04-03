@@ -25,7 +25,7 @@ RUN chmod    775 /opt/puppetlabs \
  && find /opt/puppetlabs -type f | xargs chmod g+rw
 
 RUN chmod 775 /etc/puppetlabs \
- && find /etc/puppetlabs -type d -uid 999 \
+ && find /etc/puppetlabs -type d \
   | xargs -I % \
     sh -c 'chown 0:0 %; chmod g+rwx %'
 
