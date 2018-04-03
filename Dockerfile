@@ -4,8 +4,9 @@ ENV HOME=/opt/puppetlabs/server/data/puppetserver
 ENV PATH=/opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:$PATH
 ENV RUNUSER=puppet
 ENV PUPPET_HEALTHCHECK_ENVIRONMENT=production
-ENV PUPPET_CERTNAME=puppet
-ENV PUPPET_CERT_ALTNAMES="puppetserver.puppet.svc,puppetserver"
+ENV PUPPET_CERTNAME=puppetserver
+ENV PUPPET_CERT_ALTNAMES="puppetserver.puppet.svc,puppet"
+ENV PUPPET_SERVER=puppetserver
 
 RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5 \
