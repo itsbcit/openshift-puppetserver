@@ -5,7 +5,7 @@ ENV PATH=/opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/b
 ENV RUNUSER=puppet
 ENV PUPPET_HEALTHCHECK_ENVIRONMENT=production
 ENV PUPPET_CERTNAME=puppetserver
-ENV PUPPET_CERT_ALTNAMES="puppetserver.puppet.svc,puppet"
+ENV PUPPET_CERT_ALTNAMES="puppetserver.puppet.svc,puppetserver,puppet"
 ENV PUPPET_SERVERNAME=puppetserver
 
 RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
