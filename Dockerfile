@@ -58,6 +58,8 @@ ADD 50-puppetserver-server.sh /docker-entrypoint.d/50-puppetserver-server.sh
 COPY puppet.conf /etc/puppetlabs/puppet/puppet.conf
 RUN chmod g+rw /etc/puppetlabs/puppet/puppet.conf
 
+RUN /opt/puppetlabs/puppet/bin/gem install r10k
+
 HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD \
   curl --fail -H 'Accept: pson' \
   --resolve 'puppet:8140:127.0.0.1' \
