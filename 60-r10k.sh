@@ -10,6 +10,6 @@ EOF
 
 [ -e $HOME/.ssh ] || mkdir $HOME/.ssh
 [ -e $HOME/.ssh/config ] || echo "StrictHostKeyChecking no" > $HOME/.ssh/config
-[ -e $HOME/.ssh/id_rsa ] || cat $R10K_SSH_IDENTITY > $HOME/.ssh/id_rsa
 
-chmod 400 $HOME/.ssh/id_rsa
+eval $(ssh-agent)
+cat $R10K_SSH_IDENTITY | ssh-add -k -
