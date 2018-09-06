@@ -18,9 +18,10 @@ RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm
         git \
  && rm -rf /var/cache/yum
 
+RUN userdel puppet
+
 COPY puppetdb.conf /etc/puppetlabs/puppet/puppetdb.conf
 
-COPY 10-resolve-userid.sh /docker-entrypoint.d/10-resolve-userid.sh
 COPY 60-puppet-conf.sh /docker-entrypoint.d/60-puppet-conf.sh
 COPY 60-r10k.sh /docker-entrypoint.d/60-r10k.sh
 
