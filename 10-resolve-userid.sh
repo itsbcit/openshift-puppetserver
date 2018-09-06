@@ -1,4 +1,3 @@
 if [ "$RUNUSER" = "puppet" ];then
-    sed -i "s/^puppet:.*/puppet:x:${UID}:0/" /etc/passwd
-    sed -i "s/^puppet:.*/puppet:x:998:puppet/" /etc/group
+    sed -i -r "s/^puppet:x:[0-9]+:[0-9]+:/puppet:x:${UID}:0:/" /etc/passwd
 fi
