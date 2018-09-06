@@ -7,6 +7,7 @@ git:
 EOF
 
 [ -e $R10K_SSH_IDENTITY ] || ssh-keygen -q -N '' -f $R10K_SSH_IDENTITY
+[ -e ${R10K_SSH_IDENTITY}.pub ] && cat ${R10K_SSH_IDENTITY}.pub
 
 [ -e $HOME/.ssh ] || mkdir $HOME/.ssh
 [ -e $HOME/.ssh/config ] || echo "StrictHostKeyChecking no" > $HOME/.ssh/config
