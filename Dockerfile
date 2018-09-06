@@ -13,6 +13,7 @@ RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm
  && yum -y install \
         puppetdb-termini \
         puppetserver \
+        git \
  && rm -rf /var/cache/yum
 
 COPY puppetdb.conf /etc/puppetlabs/puppet/puppetdb.conf
