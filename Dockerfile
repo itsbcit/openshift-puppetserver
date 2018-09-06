@@ -7,6 +7,8 @@ ENV PUPPET_HEALTHCHECK_ENVIRONMENT=production
 ENV PUPPET_CERTNAME=puppetserver
 ENV PUPPET_CERT_ALTNAMES="puppetserver.puppet.svc,puppetserver,puppet"
 ENV PUPPET_SERVERNAME=puppetserver
+ENV R10K_CONFIG=/etc/puppetlabs/r10k/r10k.yaml
+ENV R10K_SSH_IDENTITY=/etc/puppetlabs/r10k/id-r10k
 
 RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5 \
@@ -20,6 +22,7 @@ COPY puppetdb.conf /etc/puppetlabs/puppet/puppetdb.conf
 
 COPY 10-resolve-userid.sh /docker-entrypoint.d/10-resolve-userid.sh
 COPY 60-puppet-conf.sh /docker-entrypoint.d/60-puppet-conf.sh
+COPY 60-r10k.sh /docker-entrypoint.d/60-r10k.sh
 
 RUN chmod    775 /opt/puppetlabs \
  && chown -R 0:0 /opt/puppetlabs \
@@ -66,6 +69,10 @@ RUN mkdir -p /var/lib/r10k && \
     chmod 1770 /var/lib/r10k
 VOLUME /var/lib/r10k
 
+RUN mkdir /etc/puppetlabs/r10k && \
+    chown 0:0 /etc/puppetlabs/r10k && \
+    chmod g+rwx /etc/puppetlabs/r10k
+VOLUME /etc/puppetlabs/r10k
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD \
   curl --fail -H 'Accept: pson' \
