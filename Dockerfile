@@ -61,6 +61,12 @@ RUN chmod g+rw /etc/puppetlabs/puppet/puppet.conf
 
 RUN /opt/puppetlabs/puppet/bin/gem install r10k
 
+RUN mkdir -p /var/lib/r10k && \
+    chown 0:0 /var/lib/r10k && \
+    chmod 1770 /var/lib/r10k
+VOLUME /var/lib/r10k
+
+
 HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD \
   curl --fail -H 'Accept: pson' \
   --resolve 'puppet:8140:127.0.0.1' \
