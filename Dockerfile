@@ -10,8 +10,8 @@ ENV PUPPET_SERVERNAME=puppetserver
 ENV R10K_CONFIG=/etc/puppetlabs/r10k/r10k.yaml
 ENV R10K_SSH_IDENTITY=/etc/puppetlabs/r10k/id-r10k
 
-RUN yum -y install https://yum.puppet.com/puppet/puppet5-release-el-7.noarch.rpm \
- && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5 \
+RUN yum -y install https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm \
+ && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release \
  && yum -y install \
         puppetdb-termini \
         puppetserver \
@@ -53,11 +53,6 @@ COPY foreground /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground
 RUN chmod 775 /opt/puppetlabs/server/apps/puppetserver/cli/apps/foreground \
  && chmod 775 /etc
 
-RUN tar czf /opt/puppetlabs/server.tar.gz -C /opt/puppetlabs server
-RUN rm -rf /opt/puppetlabs/server \
- && chown 0:0 /opt/puppetlabs \
- && chmod 775 /opt/puppetlabs 
-
 ADD 50-puppetserver-server.sh /docker-entrypoint.d/50-puppetserver-server.sh
 
 COPY puppet.conf /etc/puppetlabs/puppet/puppet.conf
@@ -74,6 +69,14 @@ RUN mkdir /etc/puppetlabs/r10k && \
     chown 0:0 /etc/puppetlabs/r10k && \
     chmod g+rwx /etc/puppetlabs/r10k
 VOLUME /etc/puppetlabs/r10k
+
+RUN /opt/puppetlabs/puppet/bin/gem install vault
+RUN /opt/puppetlabs/bin/puppetserver gem install vault
+
+RUN tar czf /opt/puppetlabs/server.tar.gz -C /opt/puppetlabs server
+RUN rm -rf /opt/puppetlabs/server \
+ && chown 0:0 /opt/puppetlabs \
+ && chmod 775 /opt/puppetlabs 
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD \
   curl --fail -H 'Accept: pson' \
