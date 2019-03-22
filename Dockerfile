@@ -37,13 +37,6 @@ RUN chmod 775 /etc/puppetlabs \
   | xargs -I % \
     sh -c 'chown 0:0 %; chmod g+rwx %'
 
-# Logging config
-RUN rm -rf /var/log/puppetlabs \
- && chmod 775 /var/log
-COPY 50-varlog.sh /docker-entrypoint.d/50-varlog.sh
-COPY logback.xml /etc/puppetlabs/puppetserver/logback.xml
-COPY request-logging.xml /etc/puppetlabs/puppetserver/request-logging.xml
-
 RUN chown 0:0 /etc/puppetlabs/code \
  && chmod 775 /etc/puppetlabs/code
 VOLUME /etc/puppetlabs/code
