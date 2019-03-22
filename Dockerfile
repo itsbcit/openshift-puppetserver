@@ -9,6 +9,7 @@ ENV PUPPET_CERT_ALTNAMES="puppetserver.puppet.svc,puppetserver,puppet"
 ENV PUPPET_SERVERNAME=puppetserver
 ENV R10K_CONFIG=/etc/puppetlabs/r10k/r10k.yaml
 ENV R10K_SSH_IDENTITY=/etc/puppetlabs/r10k/id-r10k
+ENV PUPPETSERVER_JAVA_ARGS "-Xms2g -Xmx2g -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"
 
 RUN yum -y --setopt tsflags=nodocs --setopt timeout=5 install \
         https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm \
