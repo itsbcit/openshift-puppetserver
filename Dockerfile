@@ -82,6 +82,8 @@ RUN rm -rf /var/log/puppetlabs \
 
 VOLUME /var/log/puppetlabs
 
+ADD healthcheck-puppetserver.sh /
+RUN chmod 555 /healthcheck-puppetserver.sh
 
 EXPOSE 8140
 
