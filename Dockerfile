@@ -77,7 +77,7 @@ RUN /opt/puppetlabs/bin/puppetserver gem install vault
 RUN tar czf /opt/puppetlabs/server.tar.gz -C /opt/puppetlabs server
 RUN rm -rf /opt/puppetlabs/server \
  && chown 0:0 /opt/puppetlabs \
- && chmod 775 /opt/puppetlabs 
+ && chmod 775 /opt/puppetlabs
 
 ADD 60-skel.sh /docker-entrypoint.d/60-skel.sh
 
