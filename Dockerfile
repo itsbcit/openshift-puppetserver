@@ -81,6 +81,13 @@ RUN rm -rf /opt/puppetlabs/server \
 
 ADD 60-skel.sh /docker-entrypoint.d/60-skel.sh
 
+RUN rm -rf /var/log/puppetlabs \
+ && mkdir /var/log/puppetlabs \
+ && chown 0:0 /var/log/puppetlabs \
+ && chmod 0770 /var/log/puppetlabs
+
+VOLUME /var/log/puppetlabs
+
 HEALTHCHECK --interval=10s --timeout=10s --retries=90 CMD \
   curl --fail -H 'Accept: pson' \
   --resolve 'puppet:8140:127.0.0.1' \
