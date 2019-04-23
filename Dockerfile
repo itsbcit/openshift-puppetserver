@@ -73,7 +73,9 @@ RUN mkdir /etc/puppetlabs/r10k && \
 VOLUME /etc/puppetlabs/r10k
 
 RUN /opt/puppetlabs/puppet/bin/gem install vault
+RUN /opt/puppetlabs/puppet/bin/gem install debouncer
 RUN /opt/puppetlabs/bin/puppetserver gem install vault
+RUN /opt/puppetlabs/bin/puppetserver gem install debouncer
 
 RUN tar czf /opt/puppetlabs/server.tar.gz -C /opt/puppetlabs server
 RUN rm -rf /opt/puppetlabs/server \
