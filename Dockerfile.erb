@@ -16,7 +16,7 @@ RUN yum -y --setopt tsflags=nodocs --setopt timeout=5 install \
         https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release \
  && yum -y --setopt tsflags=nodocs --setopt timeout=5 install \
-        puppetdb-termini \
+        puppetdb-termini-<%= image.labels['puppetdb_termini_version'] %> \
         puppetserver-<%= image.labels['puppetserver_version'] %> \
         git \
  && rm -rf /var/cache/yum
