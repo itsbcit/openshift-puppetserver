@@ -1,4 +1,10 @@
 FROM bcit/centos:7
+LABEL maintainer="jesse_weisner@bcit.ca"
+LABEL puppetserver_version="6.5.0"
+LABEL vault_gem_version="0.12.0"
+LABEL debouncer_gem_version="0.2.2"
+LABEL r10k_gem_version="3.3.1"
+LABEL build_id="1568328794"
 
 ENV HOME=/opt/puppetlabs/server/data/puppetserver
 ENV PATH=/opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:$PATH
@@ -10,22 +16,18 @@ ENV PUPPET_SERVERNAME=puppetserver
 ENV R10K_CONFIG=/etc/puppetlabs/r10k/r10k.yaml
 ENV R10K_SSH_IDENTITY=/etc/puppetlabs/r10k/id-r10k
 ENV PUPPETSERVER_JAVA_ARGS "-Xms2g -Xmx2g -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"
-ENV PUPPETSERVER_VERSION=6.3.0
-
-LABEL version="6.3.0"
-LABEL maintainer="jesse_weisner@bcit.ca"
 
 RUN yum -y --setopt tsflags=nodocs --setopt timeout=5 install \
         https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release \
  && yum -y --setopt tsflags=nodocs --setopt timeout=5 install \
         puppetdb-termini \
-        puppetserver-$PUPPETSERVER_VERSION \
+        puppetserver-6.5.0 \
         git \
  && rm -rf /var/cache/yum
 
 # assert that pupetserver is installed
-RUN rpm -q puppetserver-$PUPPETSERVER_VERSION
+RUN rpm -q puppetserver-6.5.0
 
 RUN userdel puppet
 
@@ -60,7 +62,7 @@ ADD 50-puppetserver-server.sh /docker-entrypoint.d/50-puppetserver-server.sh
 COPY puppet.conf /etc/puppetlabs/puppet/puppet.conf
 RUN chmod g+rw /etc/puppetlabs/puppet/puppet.conf
 
-RUN /opt/puppetlabs/puppet/bin/gem install r10k
+RUN /opt/puppetlabs/puppet/bin/gem install --no-rdoc --no-ri -v 3.3.1 r10k
 
 RUN mkdir -p /var/lib/r10k && \
     chown 0:0 /var/lib/r10k && \
@@ -72,10 +74,10 @@ RUN mkdir /etc/puppetlabs/r10k && \
     chmod g+rwx /etc/puppetlabs/r10k
 VOLUME /etc/puppetlabs/r10k
 
-RUN /opt/puppetlabs/puppet/bin/gem install vault
-RUN /opt/puppetlabs/puppet/bin/gem install debouncer
-RUN /opt/puppetlabs/bin/puppetserver gem install vault
-RUN /opt/puppetlabs/bin/puppetserver gem install debouncer
+RUN /opt/puppetlabs/puppet/bin/gem install --no-rdoc --no-ri -v 0.12.0 vault
+RUN /opt/puppetlabs/puppet/bin/gem install --no-rdoc --no-ri -v 0.2.2 debouncer
+RUN /opt/puppetlabs/bin/puppetserver gem install --no-rdoc --no-ri -v 0.12.0 vault
+RUN /opt/puppetlabs/bin/puppetserver gem install --no-rdoc --no-ri -v 0.2.2 debouncer
 
 RUN tar czf /opt/puppetlabs/server.tar.gz -C /opt/puppetlabs server
 RUN rm -rf /opt/puppetlabs/server \
