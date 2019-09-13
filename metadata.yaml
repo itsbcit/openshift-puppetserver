@@ -1,6 +1,5 @@
 ---
 image_name: openshift-puppetserver
-version: '6.5.0'
 labels:
   maintainer: 'jesse_weisner@bcit.ca'
   puppetserver_version: '6.5.0'
