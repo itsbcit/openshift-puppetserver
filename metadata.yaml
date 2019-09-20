@@ -2,12 +2,13 @@
 image_name: openshift-puppetserver
 labels:
   maintainer: 'jesse_weisner@bcit.ca'
-  puppetserver_version: '6.5.0'
-  puppetdb_version: '6.5.0'
+  puppetserver_version: '6.6.0'
+  puppetdb_version: '6.6.0'
   vault_gem_version: '0.12.0'
   debouncer_gem_version: '0.2.2'
   r10k_gem_version: '3.3.1'
 suffixes:
   - '6'
-  - '6.5'
-  - '6.5.0'
+  - '6-latest'
+  - '6.6'
+  - '6.6.0'

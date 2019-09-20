@@ -1,11 +1,11 @@
 FROM bcit/centos:7
 LABEL maintainer="jesse_weisner@bcit.ca"
-LABEL puppetserver_version="6.5.0"
-LABEL puppetdb_termini_version="6.5.0"
+LABEL puppetserver_version="6.6.0"
+LABEL puppetdb_version="6.6.0"
 LABEL vault_gem_version="0.12.0"
 LABEL debouncer_gem_version="0.2.2"
 LABEL r10k_gem_version="3.3.1"
-LABEL build_id="1568330122"
+LABEL build_id="1569001942"
 
 ENV HOME=/opt/puppetlabs/server/data/puppetserver
 ENV PATH=/opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:$PATH
@@ -22,13 +22,13 @@ RUN yum -y --setopt tsflags=nodocs --setopt timeout=5 install \
         https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm \
  && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release \
  && yum -y --setopt tsflags=nodocs --setopt timeout=5 install \
-        puppetdb-termini-6.5.0 \
-        puppetserver-6.5.0 \
+        puppetdb-termini-6.6.0 \
+        puppetserver-6.6.0 \
         git \
  && rm -rf /var/cache/yum
 
 # assert that pupetserver is installed
-RUN rpm -q puppetserver-6.5.0
+RUN rpm -q puppetserver-6.6.0
 
 RUN userdel puppet
 
